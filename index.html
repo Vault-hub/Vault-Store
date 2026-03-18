@@ -1,139 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VAULT STORE | Official 💜</title>
     <style>
         :root { --p: #8b5cf6; --p-light: #f5f3ff; --text: #1f2937; --bg: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
         
         header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--p-light); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.08); }
-        .logo { font-size: 1.8rem; font-weight: 900; color: var(--p); letter-spacing: 1px; text-transform: uppercase; }
-        nav a { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: 600; cursor: pointer; transition: 0.3s ease; font-size: 1.1rem; }
-        nav a:hover { color: var(--p); }
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--p); letter-spacing: 1px; }
+        nav a { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: 600; cursor: pointer; }
         
-        .admin-btn { background: var(--p-light); color: var(--p); border: 1.5px solid var(--p); padding: 8px 22px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; }
-        .admin-btn:hover { background: var(--p); color: #fff; }
+        .admin-btn { background: var(--p-light); color: var(--p); border: 1.5px solid var(--p); padding: 8px 22px; border-radius: 50px; cursor: pointer; font-weight: bold; }
 
-        .page { display: none; padding: 40px 5%; animation: fadeIn 0.4s ease-in-out; }
+        .page { display: none; padding: 40px 5%; animation: fadeIn 0.4s ease; }
         .active { display: block; }
 
-        .hero { text-align: center; padding: 80px 20px; background: linear-gradient(180deg, var(--p-light) 0%, #fff 100%); border-radius: 0 0 60px 60px; }
-        .hero h1 { font-size: 3.2rem; color: #111; margin: 0 0 10px 0; font-weight: 900; }
-        .hero p { font-size: 1.3rem; color: #555; margin: 0 0 25px 0; }
+        .hero { text-align: center; padding: 60px 20px; background: linear-gradient(180deg, var(--p-light) 0%, #fff 100%); border-radius: 0 0 60px 60px; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 10px; }
 
-        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; padding: 0 10px; }
-        .item { background: #fff; border: 1.5px solid var(--p-light); padding: 25px; border-radius: 30px; transition: 0.4s ease; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.01); position: relative; }
-        .item:hover { transform: translateY(-12px); border-color: var(--p); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.18); }
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
+        .item { background: #fff; border: 1.5px solid var(--p-light); padding: 20px; border-radius: 25px; transition: 0.4s; text-align: center; }
+        .item:hover { transform: translateY(-10px); border-color: var(--p); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.15); }
+        .item img { width: 100%; height: 200px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; background: #f0f0f0; }
         
-        .item img { width: 100%; height: 210px; object-fit: cover; border-radius: 22px; margin-bottom: 20px; background: #eee; }
-        .item h3 { font-size: 1.4rem; margin: 0 0 8px 0; color: #111; font-weight: 700; }
-        
-        .price { font-size: 1.7rem; font-weight: 900; color: var(--p); margin: 12px 0; }
-        .buy-btn { background: var(--p); color: white; border: none; padding: 14px; border-radius: 18px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1.2rem; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .buy-btn:hover { background: #7c3aed; transform: scale(1.03); }
+        .price { font-size: 1.5rem; font-weight: 800; color: var(--p); margin: 10px 0; }
+        .buy-btn { background: var(--p); color: white; border: none; padding: 12px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1.1rem; }
 
-        /* Admin Panel */
-        .admin-box { max-width: 800px; margin: 0 auto; background: white; border: 1.5px solid #eee; padding: 35px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); }
-        .admin-box h2 { color: var(--p); margin-top: 0; text-align: center; }
-        input { width: 100%; padding: 14px; margin: 12px 0; border-radius: 12px; border: 1.5px solid #ddd; box-sizing: border-box; font-size: 1rem; }
-        input:focus { border-color: var(--p); outline: none; box-shadow: 0 0 10px rgba(139, 92, 246, 0.1); }
+        /* Modal Styles */
+        #pay-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; backdrop-filter: blur(5px); }
+        .modal-content { background:white; padding:25px; border-radius:30px; width:90%; max-width:450px; text-align:center; max-height: 85vh; overflow-y: auto; }
         
-        /* Product Item in Admin */
-        .admin-item { background: #f9fafb; padding: 12px 20px; border-radius: 15px; margin-bottom: 12px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .payment-card { background: #f8f9fa; border: 1px solid #eee; padding: 12px; border-radius: 15px; margin: 10px 0; text-align: right; position: relative; }
+        .payment-card strong { color: var(--p); display: block; margin-bottom: 5px; }
+        .payment-card code { display: block; background: #eee; padding: 8px; border-radius: 8px; font-size: 0.85rem; word-break: break-all; cursor: pointer; }
+        .payment-card code:hover { background: #e2e2e2; }
+        
+        .paypal-btn { background: #003087; color: white; padding: 10px; border-radius: 10px; text-decoration: none; display: block; margin-top: 5px; font-weight: bold; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Mobile Optimization */
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 2.4rem; }
-            .logo { font-size: 1.5rem; }
-            nav a { margin: 0 8px; font-size: 1rem; }
-            .admin-btn { padding: 6px 15px; font-size: 0.9rem; }
-        }
+        .go-discord { background: #5865F2; color: white; padding: 15px; border-radius: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
+
+        /* Admin */
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; box-sizing: border-box; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">VAULT 💜</div>
+    <div class="logo">VAULT STORE 💜</div>
     <nav>
-        <a onclick="showPage('home')">HOME</a>
-        <a onclick="showPage('shop-page')">SHOP</a>
-        <button class="admin-btn" onclick="checkOwner()">OWNER 🔐</button>
+        <a onclick="showPage('home')">الرئيسية</a>
+        <a onclick="showPage('shop-page')">المتجر</a>
+        <button class="admin-btn" onclick="checkOwner()">المالك 🔐</button>
     </nav>
 </header>
 
 <div id="home" class="page active">
     <div class="hero">
-        <h1>Welcome to <span style="color:var(--p)">VAULT</span></h1>
-        <p>Premium Digital Services & Exclusive Products ⚡</p>
-        <button class="buy-btn" style="width: 220px; margin-top: 20px;" onclick="showPage('shop-page')">VISIT SHOP</button>
+        <h1>Welcome to <span style="color:var(--p)">VAULT STORE</span></h1>
+        <p>متجرك المتكامل للخدمات الرقمية والحصرية ⚡</p>
+        <button class="buy-btn" style="width: 200px; margin-top: 20px;" onclick="showPage('shop-page')">تصفح المتجر</button>
     </div>
 </div>
 
 <div id="shop-page" class="page">
-    <h2 style="text-align:center; color:var(--p); font-size: 2rem;">PRODUCTS 🛒</h2>
+    <h2 style="text-align:center; color:var(--p)">المنتجات المتوفرة 🛒</h2>
     <div id="products-display" class="container"></div>
 </div>
 
 <div id="admin-page" class="page">
-    <div class="admin-box">
-        <h2>OWNER PANEL 🛠️</h2>
-        <div id="admin-section">
-            <h3 style="color:#555;">Add New Product</h3>
-            <input type="text" id="p-name" placeholder="Product Name (e.g., Discord Nitro)">
-            <input type="number" id="p-price" placeholder="Price (SAR)">
-            <input type="text" id="p-img" placeholder="Image URL (e.g., https://...jpg)">
-            <button class="buy-btn" onclick="addNewProduct()" style="margin-top: 10px;">ADD TO SHOP</button>
+    <div class="admin-box" style="max-width: 600px; margin: auto;">
+        <h2 style="color:var(--p)">لوحة المالك 🛠️</h2>
+        <input type="text" id="p-name" placeholder="اسم المنتج">
+        <input type="number" id="p-price" placeholder="السعر">
+        <input type="text" id="p-img" placeholder="رابط الصورة">
+        <button class="buy-btn" onclick="addNewProduct()">إضافة المنتج</button>
+        <hr>
+        <div id="admin-list"></div>
+    </div>
+</div>
+
+<div id="pay-modal">
+    <div class="modal-content">
+        <h3 style="color:var(--p); margin-top:0;">طرق التحويل المتاحة 💸</h3>
+        <p id="target-item" style="font-weight:bold;"></p>
+        <p style="font-size:0.8rem; color:#888;">اضغط على الرقم لنسخه تلقائياً</p>
+
+        <div class="payment-card">
+            <strong>مصرف الراجحي (Alrajhi)</strong>
+            <code onclick="copyText('SA4080000417608016081918')">SA40 8000 0417 6080 1608 1918</code>
         </div>
-        <hr style="margin: 35px 0; border: 0; border-top: 1px solid #eee;">
-        <h3>Current Products</h3>
-        <div id="admin-products-list"></div>
+
+        <div class="payment-card">
+            <strong>urpay</strong>
+            <code onclick="copyText('SA7280205831697222121011')">SA72 8020 5831 6972 2212 1011</code>
+        </div>
+
+        <div class="payment-card">
+            <strong>barq</strong>
+            <code onclick="copyText('SA0230100991101230309946')">SA02 3010 0991 1012 3030 9946</code>
+        </div>
+
+        <div class="payment-card">
+            <strong>STC Bank</strong>
+            <code onclick="copyText('SA2378000000001154779473')">SA23 7800 0000 0011 5477 9473</code>
+        </div>
+
+        <div class="payment-card">
+            <strong>PayPal</strong>
+            <a href="https://www.paypal.me/Wafa2027" target="_blank" class="paypal-btn">فتح رابط PayPal</a>
+        </div>
+
+        <button class="go-discord" onclick="window.location.href='https://discord.gg/dWcbfCa4AU'">
+            إرسال إيصال التحويل (Discord) 🚀
+        </button>
+        
+        <button onclick="document.getElementById('pay-modal').style.display='none'" style="margin-top:15px; border:none; background:none; color:#999; cursor:pointer;">إغلاق</button>
     </div>
 </div>
 
 <script>
-    // YOUR DISCORD INVITE LINK
-    const DISCORD_LINK = "https://discord.gg/dWcbfCa4AU";
-
     const OWNER_EMAIL = "aawaf50@gmail.com";
     const OWNER_PASS = "Open208!10017@27@9";
 
-    let products = JSON.parse(localStorage.getItem('v3_products')) || [
-        { id: 1, name: "Discord Nitro", price: 50, img: "https://via.placeholder.com/300x210?text=Discord+Nitro" },
-        { id: 2, name: "FiveM Mafia Map", price: 150, img: "https://via.placeholder.com/300x210?text=FiveM+Map" }
-    ];
+    let products = JSON.parse(localStorage.getItem('vault_v5')) || [];
 
-    function renderProducts() {
+    function render() {
         const display = document.getElementById('products-display');
-        const adminList = document.getElementById('admin-products-list');
+        const adminList = document.getElementById('admin-list');
         display.innerHTML = ''; adminList.innerHTML = '';
 
-        products.forEach(p => {
-            // Main Shop Display
+        products.forEach((p, index) => {
             display.innerHTML += `
                 <div class="item">
-                    <img src="${p.img || 'https://via.placeholder.com/300x210?text=Vault+Store'}" alt="product">
+                    <img src="${p.img || 'https://via.placeholder.com/300x200?text=VAULT+STORE'}" alt="img">
                     <h3>${p.name}</h3>
                     <div class="price">${p.price} SAR</div>
-                    <button class="buy-btn" onclick="openDiscord()">BUY NOW</button>
+                    <button class="buy-btn" onclick="openPay('${p.name}')">شراء</button>
                 </div>`;
-
-            // Admin List Display
             adminList.innerHTML += `
-                <div class="admin-item">
-                    <strong>${p.name}</strong>
-                    <button style="color:red; background:none; border:none; cursor:pointer; font-weight:bold;" onclick="deleteProduct(${p.id})">DELETE 🗑️</button>
+                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+                    <span>${p.name}</span>
+                    <button onclick="deleteProduct(${index})" style="color:red; border:none; background:none; cursor:pointer;">حذف</button>
                 </div>`;
         });
-        localStorage.setItem('v3_products', JSON.stringify(products));
+        localStorage.setItem('vault_v5', JSON.stringify(products));
     }
 
-    function openDiscord() {
-        // Redirect immediately to Discord Invite Link
-        window.location.href = DISCORD_LINK;
+    function openPay(name) {
+        document.getElementById('target-item').innerText = "طلب: " + name;
+        document.getElementById('pay-modal').style.display = 'flex';
+    }
+
+    function copyText(text) {
+        navigator.clipboard.writeText(text);
+        alert("تم نسخ الرقم بنجاح: " + text);
     }
 
     function addNewProduct() {
@@ -141,39 +165,29 @@
         const price = document.getElementById('p-price').value;
         const img = document.getElementById('p-img').value;
         if(name && price) {
-            products.push({ id: Date.now(), name, price, img });
-            renderProducts();
-            alert("Added Successfully!");
-            document.getElementById('p-name').value = '';
-            document.getElementById('p-price').value = '';
-            document.getElementById('p-img').value = '';
-        } else { alert("Please fill Name and Price."); }
-    }
-
-    function deleteProduct(id) {
-        if(confirm("Delete this product?")) {
-            products = products.filter(p => p.id !== id);
-            renderProducts();
+            products.push({name, price, img});
+            render();
+            alert("تمت الإضافة!");
+            document.getElementById('p-name').value=''; document.getElementById('p-price').value=''; document.getElementById('p-img').value='';
         }
     }
 
+    function deleteProduct(i) { products.splice(i, 1); render(); }
+
     function checkOwner() {
-        const email = prompt("Enter Owner Email:");
+        const email = prompt("Email:");
         if (email === OWNER_EMAIL) {
-            const pass = prompt("Enter Password:");
-            if (pass === OWNER_PASS) { showPage('admin-page'); } 
-            else { alert("Wrong Password!"); }
-        } else if (email !== null) { alert("Wrong Email!"); }
+            const pass = prompt("Password:");
+            if (pass === OWNER_PASS) showPage('admin-page');
+        }
     }
 
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        window.scrollTo(0, 0); // Scroll to top
     }
 
-    // Initial Render
-    renderProducts();
+    render();
 </script>
 
 </body>
