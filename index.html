@@ -2,221 +2,436 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAULT STORE | Official 💜</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر فولت الملكي | VAULT STORE</title>
     <style>
-        :root { --p: #8b5cf6; --p-dark: #7c3aed; --p-light: #f5f3ff; --text: #1f2937; --bg: #ffffff; --modal-bg: #111111; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; line-height: 1.6; }
-        
-        /* Header */
-        header { background: #fff; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--p-light); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .logo { font-size: 1.6rem; font-weight: 900; color: var(--p); letter-spacing: 1px; }
-        nav { display: flex; gap: 15px; align-items: center; }
-        nav a { color: var(--text); text-decoration: none; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
-        
-        .admin-btn { background: var(--p-light); color: var(--p); border: 1.5px solid var(--p); padding: 6px 15px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        /* التعريفات الأساسية والألوان الملكية */
+        :root {
+            --mauve-primary: #7b2cbf; /* الموف الملكي */
+            --mauve-dark: #5a189a; /* موف داكن للدرجات */
+            --mauve-light: #9d4edd; /* موف فاتح للتأثيرات */
+            --mauve-hover: #c77dff; /* موف فاتح جداً للهوفر */
+            --text-white: #ffffff; /* نص أبيض عريض */
+            --text-grey: #a0a0a0; /* نص رمادي توضيحي */
+            --background-black: #121212; /* خلفية سوداء فخمة */
+            --card-black: #1e1e1e; /* خلفية الكروت */
+            --shadow-mauve: rgba(123, 44, 191, 0.4); /* ظل بنفسجي */
+        }
 
-        /* Pages */
-        .page { display: none; padding: 20px 5%; animation: fadeIn 0.3s ease-in; }
-        .active { display: block; }
+        /* تنسيق عام */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+            color: var(--text-white);
+        }
 
-        .hero { text-align: center; padding: 50px 20px; background: linear-gradient(180deg, var(--p-light) 0%, #fff 100%); border-radius: 0 0 40px 40px; margin-bottom: 20px; }
-        .hero h1 { font-size: 2.2rem; margin: 0; color: #111; }
-        .hero p { color: #666; margin: 10px 0; }
+        body {
+            background-color: var(--background-black);
+            padding: 20px;
+        }
 
-        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .item { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 20px; transition: 0.3s; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
-        .item:hover { transform: translateY(-5px); border-color: var(--p); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.1); }
-        .item img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 12px; background: #fafafa; }
-        
-        .price { font-size: 1.4rem; font-weight: 800; color: var(--p); margin: 8px 0; }
-        .buy-btn { background: var(--p); color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1rem; transition: 0.2s; }
-        
-        /* Modal General */
-        .custom-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(4px); padding: 15px; }
-        .custom-modal-content { background:white; padding:20px; border-radius:25px; width:100%; max-width:400px; text-align:center; max-height: 90vh; overflow-y: auto; position: relative; }
-        
-        /* === تصميم واجهة دخول المالك الجديدة (The New Login Design) === */
-        #login-modal-content { background: var(--modal-bg); color: #fff; }
-        .login-title { margin: 0; color: #fff; font-size: 1.4rem; font-weight: 900; }
-        .login-subtitle { color: #aaa; font-size: 0.85rem; margin-bottom: 15px; }
-        .dark-input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; font-size: 1rem; background: #1a1a1a; color: #fff; text-align: left; }
-        .dark-input:focus { border-color: var(--p); outline: none; }
-        
-        .dark-close-btn { position: absolute; top: 10px; left: 15px; background: none; border: none; color: #aaa; font-size: 1.2rem; cursor: pointer; }
-        
-        /* Payment Modals */
-        .payment-card { background: #f9f9f9; border: 1px solid #efefef; padding: 12px; border-radius: 15px; margin: 8px 0; text-align: right; }
-        .payment-card strong { color: var(--p); font-size: 0.9rem; display: block; margin-bottom: 4px; }
-        .payment-card code { display: block; background: #fff; padding: 10px; border-radius: 10px; font-size: 0.8rem; border: 1px dashed var(--p); cursor: pointer; word-wrap: break-word; color: #333; }
-        
-        .paypal-link { background: #003087; color: white; padding: 10px; border-radius: 10px; text-decoration: none; display: block; margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
-        .go-discord { background: #5865F2; color: white; padding: 14px; border-radius: 12px; width: 100%; border: none; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem; }
+        /* حاوية المتجر بالزوايا المدورة */
+        .store-container {
+            background-color: var(--card-black);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* Admin Page Controls */
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; }
+        /* تنسيق الهيدر (Header) */
+        header {
+            background-color: #000000;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--mauve-primary);
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .logo-section h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-white);
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--mauve-hover);
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 20px;
+            color: var(--text-grey);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .icon:hover {
+            color: var(--mauve-light);
+        }
+
+        .cart-icon-container {
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--mauve-primary);
+            color: var(--text-white);
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* تنسيق البانر الرئيسي (Hero Section) */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--mauve-dark) 0%, var(--mauve-primary) 50%, var(--mauve-dark) 100%);
+            padding: 50px;
+            text-align: center;
+            border-bottom: 2px solid var(--mauve-primary);
+        }
+
+        .hero-banner h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* تنسيق كروت المنتجات */
+        .product-card {
+            background-color: var(--card-black);
+            border-radius: 15px;
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid transparent;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: var(--mauve-light);
+            transform: translateY(-5px);
+        }
+
+        .product-logo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-info h3 {
+            margin-bottom: 5px;
+            color: var(--text-grey);
+        }
+
+        .product-info h4 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .product-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--mauve-primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: var(--mauve-hover);
+        }
+
+        /* تنسيق قسم التصنيفات المميزة */
+        .categories-section {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .categories-section h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .categories-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-icon {
+            font-size: 30px;
+            color: var(--mauve-primary);
+        }
+
+        /* تنسيق الفوتر (Footer) وطرق الدفع */
+        footer {
+            padding: 30px;
+            background-color: #000000;
+            border-top: 2px solid var(--mauve-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .payment-methods {
+            flex-grow: 1;
+        }
+
+        .payment-methods h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .payment-item {
+            background-color: var(--card-black);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .payment-item:hover {
+            border-color: var(--mauve-light);
+        }
+
+        .payment-icon {
+            font-size: 28px;
+            color: var(--mauve-primary);
+            margin-bottom: 5px;
+        }
+
+        /* تنسيق سلة التسوق */
+        .cart-section {
+            width: 300px;
+            margin-right: 30px;
+            background-color: var(--card-black);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .cart-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .item-details p {
+            font-weight: bold;
+        }
+
+        .item-details small {
+            color: var(--text-grey);
+        }
+
+        .total-section {
+            margin-top: 15px;
+            border-top: 1px solid var(--text-grey);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
+    <div class="store-container">
+        <header>
+            <div class="logo-section">
+                <h1>VAULT STORE</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">الرئيسية</a></li>
+                <li><a href="#">ديسكورد نيترو</a></li>
+                <li><a href="#">ألعاب</a></li>
+                <li><a href="#">شحن رصيد</a></li>
+                <li><a href="#">بطاقات هدايا</a></li>
+                <li><a href="#">اتصل بنا</a></li>
+            </ul>
+            <div class="action-icons">
+                <span class="icon">🔍</span>
+                <div class="cart-icon-container">
+                    <span class="icon">🛒</span>
+                    <span class="cart-badge">2</span>
+                </div>
+                <span class="icon">🌐</span>
+            </div>
+        </header>
 
-<header>
-    <div class="logo">VAULT STORE 💜</div>
-    <nav>
-        <a onclick="showPage('home')">الرئيسية</a>
-        <a onclick="showPage('shop-page')">المتجر</a>
-        <button class="admin-btn" onclick="toggleModal('login-modal')">المالك</button>
-    </nav>
-</header>
-
-<div id="home" class="page active">
-    <div class="hero">
-        <h1>VAULT STORE</h1>
-        <p>وجهتك الأولى للخدمات الرقمية الفاخرة ⚡</p>
-        <button class="buy-btn" style="width: 180px;" onclick="showPage('shop-page')">دخول المتجر</button>
-    </div>
-</div>
-
-<div id="shop-page" class="page">
-    <h3 style="text-align:center; color:var(--p); margin-bottom:20px;">المنتجات</h3>
-    <div id="products-display" class="container"></div>
-</div>
-
-<div id="admin-page" class="page">
-    <div style="background: white; padding: 20px; border-radius: 20px; border: 1px solid #eee;">
-        <h3 style="color:var(--p)">لوحة المالك 🛠️</h3>
-        <p style="color:#555; text-align:right;">أهلاً بك يا مالك! أضف أو احذف المنتجات من هنا.</p>
-        <input type="text" id="p-name" placeholder="اسم المنتج">
-        <input type="number" id="p-price" placeholder="السعر">
-        <input type="text" id="p-img" placeholder="رابط الصورة">
-        <button class="buy-btn" onclick="addNewProduct()">إضافة منتج للواجهة</button>
-        <hr style="margin:20px 0; border:0; border-top:1px solid #eee;">
-        <h3>المنتجات الحالية 📋</h3>
-        <div id="admin-list"></div>
-    </div>
-</div>
-
-<div id="login-modal" class="custom-modal">
-    <div id="login-modal-content" class="custom-modal-content">
-        <button class="dark-close-btn" onclick="toggleModal('login-modal')">✖</button>
-        <h2 class="login-title">لوحة التحكم 🔐</h2>
-        <p class="login-subtitle">أدخل بيانات اعتماد المالك للوصول.</p>
-        
-        <input type="email" id="login-email" class="dark-input" placeholder="البريد الإلكتروني للوصول" required>
-        <input type="password" id="login-pass" class="dark-input" placeholder="كلمة المرور" required>
-        
-        <button class="buy-btn" onclick="processCustomLogin()" style="margin-top: 15px;">تسجيل الدخول</button>
-    </div>
-</div>
-
-<div id="pay-modal" class="custom-modal">
-    <div class="modal-content custom-modal-content">
-        <h3 style="margin-top:0; color:var(--p);">طرق التحويل ✅</h3>
-        <p id="target-item" style="font-weight:bold;"></p>
-        
-        <div class="payment-card">
-            <strong>مصرف الراجحي</strong>
-            <code onclick="copyText('SA4080000417608016081918')">SA40 8000 0417 6080 1608 1918</code>
-        </div>
-        <div class="payment-card">
-            <strong>urpay</strong>
-            <code onclick="copyText('SA7280205831697222121011')">SA72 8020 5831 6972 2212 1011</code>
-        </div>
-        <div class="payment-card">
-            <strong>PayPal</strong>
-            <a href="https://www.paypal.me/Wafa2027" target="_blank" class="paypal-link">فتح رابط PayPal</a>
+        <div class="hero-banner">
+            <h2>متجر فولت الملكي | بوابتك لعالم القيمنق</h2>
+            <div class="hero-content">
+                <div class="product-card">
+                    <div class="product-logo">VAULT STORE</div>
+                    <div class="product-info">
+                        <h3>ديسكورد نيترو شهر</h3>
+                        <h4>NITRO GAMING MONTHLY GIFT</h4>
+                    </div>
+                    <img src="path/to/image_31.png" alt="ديسكورد نيترو شهر" class="product-image">
+                    <button class="add-to-cart-btn">أضف للسلة</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-logo">VAULT STORE</div>
+                    <div class="product-info">
+                        <h3>ديسكورد نيترو 3 أشهر</h3>
+                        <h4>NITRO GAMING 3 MONTHS GIFT</h4>
+                    </div>
+                    <img src="path/to/image_31.png" alt="ديسكورد نيترو 3 أشهر" class="product-image">
+                    <button class="add-to-cart-btn">أضف للسلة</button>
+                </div>
+            </div>
         </div>
 
-        <button class="go-discord" onclick="window.location.href='https://discord.gg/dWcbfCa4AU'">
-            تأكيد الطلب عبر الديسكورد 🚀
-        </button>
-        <button onclick="toggleModal('pay-modal')" style="margin-top:15px; border:none; background:none; color:#bbb; cursor:pointer;">إغلاق</button>
+        <div class="categories-section">
+            <h3>التصنيفات المميزة</h3>
+            <div class="categories-grid">
+                <div class="category-item">
+                    <span class="category-icon">🚀</span>
+                    <p>نيترو</p>
+                </div>
+                <div class="category-item">
+                    <span class="category-icon">🎮</span>
+                    <p>ألعاب PC</p>
+                </div>
+                <div class="category-item">
+                    <span class="category-icon">🎮</span>
+                    <p>ألعاب 콘솔</p>
+                </div>
+                <div class="category-item">
+                    <span class="category-icon">🎟️</span>
+                    <p>بطاقات ستيم</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="payment-methods">
+                <h3>طرق الدفع المدعومة</h3>
+                <div class="payment-grid">
+                    <div class="payment-item">
+                        <span class="payment-icon">💳</span>
+                        <p>مدى</p>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-icon">💳</span>
+                        <p>فيزا</p>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-icon">💳</span>
+                        <p>ماستركارد</p>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-icon">🍎</span>
+                        <p>آبل باي</p>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-icon">🏦</span>
+                        <p>التحويل البنكي</p>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-icon">₿</span>
+                        <p>العملات الرقمية</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-section">
+                <h3>سلة التسوق</h3>
+                <div class="cart-item">
+                    <div class="item-details">
+                        <p>نيترو شهر</p>
+                        <small>VAULT STORE</small>
+                    </div>
+                    <p>15 ريال</p>
+                </div>
+                <div class="cart-item">
+                    <div class="item-details">
+                        <p>نيترو 3 أشهر</p>
+                        <small>VAULT STORE</small>
+                    </div>
+                    <p>45 ريال</p>
+                </div>
+                <div class="total-section">
+                    <p>الإجمالي</p>
+                    <p>60 ريال</p>
+                </div>
+                <button class="add-to-cart-btn checkout-btn">إتمام الدفع</button>
+            </div>
+        </footer>
     </div>
-</div>
-
-<script>
-    // بيانات الدخول الرسمية (الحين تدعم البريدين)
-    const OWNER_EMAILS = ["aawaf50@gmail.com", "nnaiif376@gmail.com"];
-    const OWNER_PASS = "Open208!10017@27@9";
-
-    let products = JSON.parse(localStorage.getItem('vault_v6')) || [];
-
-    function render() {
-        const display = document.getElementById('products-display');
-        const adminList = document.getElementById('admin-list');
-        display.innerHTML = ''; adminList.innerHTML = '';
-
-        products.forEach((p, index) => {
-            display.innerHTML += `
-                <div class="item">
-                    <img src="${p.img || 'https://via.placeholder.com/300x180?text=Vault+Store'}" alt="product">
-                    <h3 style="margin:5px 0;">${p.name}</h3>
-                    <div class="price">${p.price} ريال</div>
-                    <button class="buy-btn" onclick="openPay('${p.name}')">طلب المنتج</button>
-                </div>`;
-            adminList.innerHTML += `
-                <div style="display:flex; justify-content:space-between; padding:10px; background:#f9f9f9; border-radius:10px; margin-bottom:8px;">
-                    <span>${p.name}</span>
-                    <button onclick="deleteProduct(${index})" style="color:red; border:none; background:none; cursor:pointer;">حذف</button>
-                </div>`;
-        });
-        localStorage.setItem('vault_v6', JSON.stringify(products));
-    }
-
-    function openPay(name) {
-        document.getElementById('target-item').innerText = name;
-        document.getElementById('pay-modal').style.display = 'flex';
-    }
-
-    // === دالة تسجيل الدخول الجديدة كلياً (New Login Function) ===
-    function processCustomLogin() {
-        const email = document.getElementById('login-email').value.trim().toLowerCase();
-        const pass = document.getElementById('login-pass').value;
-
-        // التحقق من أن البريد هو واحد من البريدين المسموحين، ومن صحة الباسورد
-        if (OWNER_EMAILS.includes(email) && pass === OWNER_PASS) {
-            toggleModal('login-modal'); // إغلاق نافذة الدخول
-            showPage('admin-page');     // فتح صفحة المالك
-            // مسح الخانات لزيادة الأمان
-            document.getElementById('login-email').value = '';
-            document.getElementById('login-pass').value = '';
-        } else {
-            alert("خطأ: البيانات غير صحيحة. يرجى التحقق من البريد والباسورد!");
-        }
-    }
-
-    function toggleModal(id) {
-        const modal = document.getElementById(id);
-        modal.style.display = (modal.style.display === 'flex' ? 'none' : 'flex');
-    }
-
-    // دوال المالك الأساسية (لم تتغير)
-    function addNewProduct() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const img = document.getElementById('p-img').value;
-        if(name && price) {
-            products.push({name, price, img});
-            render();
-            alert("تمت الإضافة!");
-            document.getElementById('p-name').value=''; document.getElementById('p-price').value=''; document.getElementById('p-img').value='';
-        } else { alert("يرجى تعبئة الاسم والسعر!"); }
-    }
-
-    function deleteProduct(i) { products.splice(i, 1); render(); }
-
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0, 0); // التمرير لأعلى
-    }
-
-    function copyText(text) { navigator.clipboard.writeText(text).then(() => alert("تم نسخ الرقم بنجاح ✅")); }
-
-    render();
-</script>
-
 </body>
 </html>
