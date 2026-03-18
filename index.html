@@ -3,435 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر فولت الملكي | VAULT STORE</title>
+    <title>VAULT STORE | الفخامة الملكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* التعريفات الأساسية والألوان الملكية */
         :root {
-            --mauve-primary: #7b2cbf; /* الموف الملكي */
-            --mauve-dark: #5a189a; /* موف داكن للدرجات */
-            --mauve-light: #9d4edd; /* موف فاتح للتأثيرات */
-            --mauve-hover: #c77dff; /* موف فاتح جداً للهوفر */
-            --text-white: #ffffff; /* نص أبيض عريض */
-            --text-grey: #a0a0a0; /* نص رمادي توضيحي */
-            --background-black: #121212; /* خلفية سوداء فخمة */
-            --card-black: #1e1e1e; /* خلفية الكروت */
-            --shadow-mauve: rgba(123, 44, 191, 0.4); /* ظل بنفسجي */
+            --primary-mauve: #8a2be2;
+            --dark-bg: #0a0a0b;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-glow: 0 0 20px rgba(138, 43, 226, 0.3);
         }
 
-        /* تنسيق عام */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-decoration: none;
-            color: var(--text-white);
+            font-family: 'Cairo', sans-serif;
         }
 
         body {
-            background-color: var(--background-black);
-            padding: 20px;
+            background-color: var(--dark-bg);
+            color: white;
+            line-height: 1.6;
+            background-image: radial-gradient(circle at top right, #1a0b2e 0%, #0a0a0b 40%);
         }
 
-        /* حاوية المتجر بالزوايا المدورة */
-        .store-container {
-            background-color: var(--card-black);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* تنسيق الهيدر (Header) */
-        header {
-            background-color: #000000;
-            padding: 15px 30px;
+        /* الهيدر الاحترافي */
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--mauve-primary);
+            padding: 20px 5%;
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
         }
 
-        .logo-section h1 {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--text-white);
-            margin-right: 10px;
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(to left, #fff, var(--primary-mauve));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            list-style: none;
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        .nav-links a {
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--mauve-hover);
-        }
-
-        .action-icons {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .icon {
-            font-size: 20px;
-            color: var(--text-grey);
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .icon:hover {
-            color: var(--mauve-light);
-        }
-
-        .cart-icon-container {
-            position: relative;
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: var(--mauve-primary);
-            color: var(--text-white);
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* تنسيق البانر الرئيسي (Hero Section) */
-        .hero-banner {
-            background: linear-gradient(135deg, var(--mauve-dark) 0%, var(--mauve-primary) 50%, var(--mauve-dark) 100%);
-            padding: 50px;
+        .hero-section {
             text-align: center;
-            border-bottom: 2px solid var(--mauve-primary);
+            margin-bottom: 60px;
         }
 
-        .hero-banner h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
+        .hero-section h2 {
+            font-size: 40px;
+            margin-bottom: 10px;
         }
 
-        .hero-content {
-            display: flex;
-            justify-content: center;
+        .hero-section p {
+            color: #b0b0b0;
+            font-size: 18px;
+        }
+
+        /* شبكة المنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-top: 30px;
         }
 
-        /* تنسيق كروت المنتجات */
         .product-card {
-            background-color: var(--card-black);
-            border-radius: 15px;
-            width: 300px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 1px solid transparent;
-            transition: border-color 0.3s, transform 0.3s;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .product-card:hover {
-            border-color: var(--mauve-light);
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            border-color: var(--primary-mauve);
+            box-shadow: var(--accent-glow);
         }
 
-        .product-logo {
-            font-size: 18px;
-            font-weight: bold;
+        .product-card img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .product-title {
+            font-size: 22px;
+            font-weight: 700;
             margin-bottom: 10px;
         }
 
-        .product-info h3 {
-            margin-bottom: 5px;
-            color: var(--text-grey);
-        }
-
-        .product-info h4 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .product-image {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .add-to-cart-btn {
-            background-color: var(--mauve-primary);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 16px;
+        .price-tag {
+            font-size: 24px;
+            color: var(--primary-mauve);
             font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--primary-mauve), #bc13fe);
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: 0.3s;
         }
 
-        .add-to-cart-btn:hover {
-            background-color: var(--mauve-hover);
+        .buy-btn:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
         }
 
-        /* تنسيق قسم التصنيفات المميزة */
-        .categories-section {
-            padding: 30px;
+        /* طرق الدفع - دمج سلة وزد */
+        .payment-methods {
+            margin-top: 80px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 30px;
+            padding: 40px;
             text-align: center;
         }
 
-        .categories-section h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .categories-grid {
+        .payment-icons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            filter: grayscale(100%) brightness(200%);
+            opacity: 0.6;
         }
 
-        .category-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+        .payment-icons img {
+            height: 35px;
+            transition: 0.3s;
         }
 
-        .category-icon {
-            font-size: 30px;
-            color: var(--mauve-primary);
+        .payment-icons img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
         }
 
-        /* تنسيق الفوتر (Footer) وطرق الدفع */
-        footer {
-            padding: 30px;
-            background-color: #000000;
-            border-top: 2px solid var(--mauve-primary);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .payment-methods {
-            flex-grow: 1;
-        }
-
-        .payment-methods h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .payment-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .payment-item {
-            background-color: var(--card-black);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        .payment-item:hover {
-            border-color: var(--mauve-light);
-        }
-
-        .payment-icon {
-            font-size: 28px;
-            color: var(--mauve-primary);
-            margin-bottom: 5px;
-        }
-
-        /* تنسيق سلة التسوق */
-        .cart-section {
-            width: 300px;
-            margin-right: 30px;
-            background-color: var(--card-black);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .cart-section h3 {
-            margin-bottom: 15px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .item-details p {
-            font-weight: bold;
-        }
-
-        .item-details small {
-            color: var(--text-grey);
-        }
-
-        .total-section {
-            margin-top: 15px;
-            border-top: 1px solid var(--text-grey);
-            padding-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-        }
-
-        .checkout-btn {
-            margin-top: 20px;
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
+        @media (max-width: 768px) {
+            .hero-section h2 { font-size: 28px; }
+            .products-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="store-container">
-        <header>
-            <div class="logo-section">
-                <h1>VAULT STORE</h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#">الرئيسية</a></li>
-                <li><a href="#">ديسكورد نيترو</a></li>
-                <li><a href="#">ألعاب</a></li>
-                <li><a href="#">شحن رصيد</a></li>
-                <li><a href="#">بطاقات هدايا</a></li>
-                <li><a href="#">اتصل بنا</a></li>
-            </ul>
-            <div class="action-icons">
-                <span class="icon">🔍</span>
-                <div class="cart-icon-container">
-                    <span class="icon">🛒</span>
-                    <span class="cart-badge">2</span>
-                </div>
-                <span class="icon">🌐</span>
-            </div>
-        </header>
 
-        <div class="hero-banner">
-            <h2>متجر فولت الملكي | بوابتك لعالم القيمنق</h2>
-            <div class="hero-content">
-                <div class="product-card">
-                    <div class="product-logo">VAULT STORE</div>
-                    <div class="product-info">
-                        <h3>ديسكورد نيترو شهر</h3>
-                        <h4>NITRO GAMING MONTHLY GIFT</h4>
-                    </div>
-                    <img src="path/to/image_31.png" alt="ديسكورد نيترو شهر" class="product-image">
-                    <button class="add-to-cart-btn">أضف للسلة</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-logo">VAULT STORE</div>
-                    <div class="product-info">
-                        <h3>ديسكورد نيترو 3 أشهر</h3>
-                        <h4>NITRO GAMING 3 MONTHS GIFT</h4>
-                    </div>
-                    <img src="path/to/image_31.png" alt="ديسكورد نيترو 3 أشهر" class="product-image">
-                    <button class="add-to-cart-btn">أضف للسلة</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="categories-section">
-            <h3>التصنيفات المميزة</h3>
-            <div class="categories-grid">
-                <div class="category-item">
-                    <span class="category-icon">🚀</span>
-                    <p>نيترو</p>
-                </div>
-                <div class="category-item">
-                    <span class="category-icon">🎮</span>
-                    <p>ألعاب PC</p>
-                </div>
-                <div class="category-item">
-                    <span class="category-icon">🎮</span>
-                    <p>ألعاب 콘솔</p>
-                </div>
-                <div class="category-item">
-                    <span class="category-icon">🎟️</span>
-                    <p>بطاقات ستيم</p>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <div class="payment-methods">
-                <h3>طرق الدفع المدعومة</h3>
-                <div class="payment-grid">
-                    <div class="payment-item">
-                        <span class="payment-icon">💳</span>
-                        <p>مدى</p>
-                    </div>
-                    <div class="payment-item">
-                        <span class="payment-icon">💳</span>
-                        <p>فيزا</p>
-                    </div>
-                    <div class="payment-item">
-                        <span class="payment-icon">💳</span>
-                        <p>ماستركارد</p>
-                    </div>
-                    <div class="payment-item">
-                        <span class="payment-icon">🍎</span>
-                        <p>آبل باي</p>
-                    </div>
-                    <div class="payment-item">
-                        <span class="payment-icon">🏦</span>
-                        <p>التحويل البنكي</p>
-                    </div>
-                    <div class="payment-item">
-                        <span class="payment-icon">₿</span>
-                        <p>العملات الرقمية</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cart-section">
-                <h3>سلة التسوق</h3>
-                <div class="cart-item">
-                    <div class="item-details">
-                        <p>نيترو شهر</p>
-                        <small>VAULT STORE</small>
-                    </div>
-                    <p>15 ريال</p>
-                </div>
-                <div class="cart-item">
-                    <div class="item-details">
-                        <p>نيترو 3 أشهر</p>
-                        <small>VAULT STORE</small>
-                    </div>
-                    <p>45 ريال</p>
-                </div>
-                <div class="total-section">
-                    <p>الإجمالي</p>
-                    <p>60 ريال</p>
-                </div>
-                <button class="add-to-cart-btn checkout-btn">إتمام الدفع</button>
-            </div>
-        </footer>
+<nav>
+    <div class="logo">VAULT STORE</div>
+    <div class="nav-links">
+        <button style="background:none; border:1px solid var(--primary-mauve); color:white; padding:8px 20px; border-radius:10px; cursor:pointer;">تسجيل الدخول</button>
     </div>
+</nav>
+
+<div class="container">
+    <div class="hero-section">
+        <h2>متجر فولت | وجهتك لخدمات الديسكورد</h2>
+        <p>تسليم فوري، ضمان ذهبي، وفخامة لا تنتهي</p>
+    </div>
+
+    <div class="products-grid">
+        <div class="product-card">
+            <img src="https://i.imgur.com/your-image-1.png" alt="نيترو شهر">
+            <div class="product-title">ديسكورد نيترو قيمينق (شهر)</div>
+            <div class="price-tag">15.00 ر.س</div>
+            <button class="buy-btn">أضف للسلة 🛒</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://i.imgur.com/your-image-2.png" alt="نيترو 3 أشهر">
+            <div class="product-title">ديسكورد نيترو قيمينق (3 أشهر)</div>
+            <div class="price-tag">45.00 ر.س</div>
+            <button class="buy-btn">أضف للسلة 🛒</button>
+        </div>
+    </div>
+
+    <div class="payment-methods">
+        <h3>طرق دفع آمنة ومعتمدة</h3>
+        <div class="payment-icons">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Apple_Pay_logo.svg" alt="Apple Pay">
+            <img src="https://www.mada.com.sa/sites/default/files/2018-05/mada_logo_0.png" alt="Mada" style="height: 25px;">
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; padding: 40px; color: #555;">
+    جميع الحقوق محفوظة لمتجر فولت © 2026
+</footer>
+
 </body>
 </html>
