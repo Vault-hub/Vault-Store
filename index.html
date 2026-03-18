@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Store | المتجر الرسمي 👑</title>
+    <style>
+        :root { --p: #ae62fb; --bg: #05010a; --c: #120520; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        header { background: #170a25; padding: 15px; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px solid var(--p); position: sticky; top: 0; z-index: 99; }
+        header nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; cursor: pointer; }
+        .admin-login { background: #ff00ff1a; color: #ff00ff; border: 1px solid #ff00ff; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        .page { display: none; padding: 40px 10%; animation: fadeIn 0.4s; }
+        .active { display: block; }
+        .tabs { margin-bottom: 30px; }
+        .tabs button { background: var(--c); color: white; border: 1px solid var(--p); padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; }
+        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
+        .item { background: var(--c); border: 1px solid #251041; padding: 20px; border-radius: 15px; width: 200px; transition: 0.3s; }
+        .item:hover { transform: translateY(-10px); border-color: var(--p); }
+        .purple { color: var(--p); }
+        .buy { background: var(--p); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
+        .admin-box { background: linear-gradient(135deg, #1c0e30, #05010a); border: 2px solid var(--p); border-radius: 25px; padding: 40px; }
+        input, select { width: 90%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; background: #1c0e30; color: white; border: 1px solid var(--p); }
+        .delete-btn { background: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-size: 1.8rem; font-weight: 900; color: var(--p);">VAULT STORE 👑</div>
+    <nav>
+        <a onclick="showPage('home')">الرئيسية</a>
+        <a onclick="showPage('shop-page')">المتجر</a>
+        <button class="admin-login" onclick="checkOwner()">لوحة الملاك 🔐</button>
+    </nav>
+</header>
+
+<div id="home" class="page active">
+    <h1 style="font-size: 3.5rem;">مرحباً بك في <span class="purple">VAULT</span></h1>
+    <p>أقوى خدمات الديسكورد، فايف إم، والرسم الاحترافي.</p>
+    <button class="buy" style="width: 200px;" onclick="showPage('shop-page')">دخول المتجر</button>
+</div>
+
+<div id="shop-page" class="page">
+    <div class="tabs">
+        <button onclick="filterShop('all')">الكل</button>
+        <button onclick="filterShop('discord')">ديسكورد</button>
+        <button onclick="filterShop('fivem')">فايف إم</button>
+        <button onclick="filterShop('design')">رسم</button>
+    </div>
+    <div id="products-display" class="container"></div>
+</div>
+
+<div id="admin-page" class="page">
+    <div class="admin-box">
+        <h1>لوحة تحكم الزعيم نايف 👑</h1>
+        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+            <h3>إضافة منتج جديد</h3>
+            <input type="text" id="p-name" placeholder="اسم المنتج">
+            <input type="number" id="p-price" placeholder="السعر (SAR)">
+            <select id="p-category">
+                <option value="discord">ديسكورد</option>
+                <option value="fivem">فايف إم</option>
+                <option value="design">رسم</option>
+            </select>
+            <button class="buy" onclick="addNewProduct()">إضافة للمتجر</button>
+        </div>
+        <hr>
+        <h3>إدارة المنتجات</h3>
+        <div id="admin-products-list"></div>
+    </div>
+</div>
+
+<script>
+    const OWNER_EMAIL = "nnaiif376@gmail.com";
+    const OWNER_PASS = "Open208!10017@27@9";
+
+    let products = [
+        { id: 1, name: "نايترو قيمينق", price: 50, category: "discord" },
+        { id: 2, name: "ماب مافيا كلاسيك", price: 150, category: "fivem" },
+        { id: 3, name: "لوقو احترافي", price: 40, category: "design" }
+    ];
+
+    function renderProducts(filter = 'all') {
+        const display = document.getElementById('products-display');
+        const adminList = document.getElementById('admin-products-list');
+        display.innerHTML = '';
+        adminList.innerHTML = '';
+
+        products.forEach(p => {
+            if (filter === 'all' || p.category === filter) {
+                display.innerHTML += `
+                    <div class="item">
+                        <h3>${p.name}</h3>
+                        <p class="purple">${p.price} SAR</p>
+                        <button class="buy" onclick="alert('تواصل مع نايف لإتمام الطلب!')">شراء</button>
+                    </div>`;
+            }
+            adminList.innerHTML += `
+                <div style="display:flex; justify-content:space-between; background:#1c0e30; padding:15px; margin-bottom:10px; border-radius:10px; border:1px solid var(--p);">
+                    <span>${p.name} (${p.price} SAR)</span>
+                    <button class="delete-btn" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+                </div>`;
+        });
+    }
+
+    function addNewProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const category = document.getElementById('p-category').value;
+        if (name && price) {
+            products.push({ id: Date.now(), name, price, category });
+            renderProducts();
+            alert("تمت الإضافة بنجاح!");
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-price').value = '';
+        }
+    }
+
+    function deleteProduct(id) {
+        products = products.filter(p => p.id !== id);
+        renderProducts();
+    }
+
+    function checkOwner() {
+        const email = prompt("أدخل بريد المالك:");
+        if (email && email.toLowerCase().trim() === OWNER_EMAIL) {
+            const pass = prompt("أدخل كلمة المرور الخاصة بنايف:");
+            if (pass === OWNER_PASS) {
+                alert("أهلاً بك يا زعيم 👑");
+                showPage('admin-page');
+            } else { alert("كلمة السر خطأ!"); }
+        } else { alert("البريد خطأ!"); }
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function filterShop(cat) { renderProducts(cat); }
+    renderProducts();
+</script>
+
+</body>
+</html>
