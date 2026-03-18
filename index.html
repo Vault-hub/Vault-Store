@@ -3,118 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vault Store | المتجر الرسمي 👑</title>
+    <title>VAULT STORE | المتجر الرسمي 👑</title>
     <style>
-        :root { --p: #ae62fb; --bg: #05010a; --c: #120520; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        header { background: #170a25; padding: 15px; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px solid var(--p); position: sticky; top: 0; z-index: 99; }
-        header nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; cursor: pointer; }
-        .admin-login { background: #ff00ff1a; color: #ff00ff; border: 1px solid #ff00ff; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
-        .page { display: none; padding: 40px 10%; animation: fadeIn 0.4s; }
+        :root { --p: #7c3aed; --bg: #ffffff; --text: #1a1a1a; --card: #f8f9fa; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; transition: 0.3s; overflow-x: hidden; }
+        
+        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        header .logo { font-size: 1.6rem; font-weight: 900; color: var(--p); letter-spacing: 1px; }
+        nav a { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        nav a:hover { color: var(--p); }
+        
+        .admin-login { background: #f3f0ff; color: var(--p); border: 1px solid var(--p); padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+
+        .page { display: none; padding: 40px 5%; animation: slideUp 0.5s ease-out; }
         .active { display: block; }
-        .tabs { margin-bottom: 30px; }
-        .tabs button { background: var(--c); color: white; border: 1px solid var(--p); padding: 10px 20px; cursor: pointer; border-radius: 5px; margin: 5px; }
-        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
-        .item { background: var(--c); border: 1px solid #251041; padding: 20px; border-radius: 15px; width: 200px; transition: 0.3s; }
-        .item:hover { transform: translateY(-10px); border-color: var(--p); }
-        .purple { color: var(--p); }
-        .buy { background: var(--p); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
-        .admin-box { background: linear-gradient(135deg, #1c0e30, #05010a); border: 2px solid var(--p); border-radius: 25px; padding: 40px; }
-        input, select { width: 90%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; background: #1c0e30; color: white; border: 1px solid var(--p); }
-        .delete-btn { background: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .hero { padding: 60px 0; text-align: center; background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%); border-radius: 0 0 50px 50px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; color: #111; }
+
+        .tabs { margin: 30px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .tabs button { background: white; color: #555; border: 1px solid #ddd; padding: 10px 25px; cursor: pointer; border-radius: 50px; font-weight: bold; transition: 0.3s; }
+        .tabs button:hover, .tabs button.active-tab { background: var(--p); color: white; border-color: var(--p); }
+
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; padding: 20px; }
+        .item { background: var(--card); border: 1px solid #eee; padding: 15px; border-radius: 20px; transition: 0.4s; position: relative; overflow: hidden; }
+        .item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(124, 58, 237, 0.1); border-color: var(--p); }
+        .item img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; background: #ddd; }
+        
+        .price { font-size: 1.4rem; font-weight: 800; color: var(--p); margin: 10px 0; }
+        .buy { background: var(--p); color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
+        .buy:hover { background: #6d28d9; }
+
+        /* لوحة التحكم */
+        .admin-box { max-width: 800px; margin: 0 auto; background: white; border: 1px solid #eee; padding: 30px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+        
+        /* نافذة الدفع Apple Pay */
+        #payment-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; }
+        .modal-content { background:white; padding:30px; border-radius:25px; width:90%; max-width:400px; text-align:center; }
+        .apple-pay-btn { background: black; color: white; padding: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; cursor: pointer; font-size: 1.2rem; margin-top: 20px; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="font-size: 1.8rem; font-weight: 900; color: var(--p);">VAULT STORE 👑</div>
+    <div class="logo">VAULT STORE</div>
     <nav>
         <a onclick="showPage('home')">الرئيسية</a>
         <a onclick="showPage('shop-page')">المتجر</a>
-        <button class="admin-login" onclick="checkOwner()">لوحة الملاك 🔐</button>
+        <button class="admin-login" onclick="checkOwner()">المالك 🔐</button>
     </nav>
 </header>
 
 <div id="home" class="page active">
-    <h1 style="font-size: 3.5rem;">مرحباً بك في <span class="purple">VAULT</span></h1>
-    <p>أقوى خدمات الديسكورد، فايف إم، والرسم الاحترافي.</p>
-    <button class="buy" style="width: 200px;" onclick="showPage('shop-page')">دخول المتجر</button>
+    <div class="hero">
+        <h1>مرحباً بك في <span style="color:var(--p)">VAULT</span></h1>
+        <p>اكتشف أفضل الخدمات الرقمية والحصريات في مكان واحد</p>
+        <button class="buy" style="width: 220px; margin: 20px auto;" onclick="showPage('shop-page')">تصفح المنتجات</button>
+    </div>
 </div>
 
 <div id="shop-page" class="page">
     <div class="tabs">
-        <button onclick="filterShop('all')">الكل</button>
-        <button onclick="filterShop('discord')">ديسكورد</button>
-        <button onclick="filterShop('fivem')">فايف إم</button>
-        <button onclick="filterShop('design')">رسم</button>
+        <button class="active-tab" onclick="filterShop('all', this)">الكل</button>
+        <button onclick="filterShop('discord', this)">ديسكورد</button>
+        <button onclick="filterShop('fivem', this)">فايف إم</button>
+        <button onclick="filterShop('design', this)">تصميم</button>
     </div>
     <div id="products-display" class="container"></div>
 </div>
 
 <div id="admin-page" class="page">
     <div class="admin-box">
-        <h1>لوحة تحكم الزعيم نايف 👑</h1>
-        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-            <h3>إضافة منتج جديد</h3>
-            <input type="text" id="p-name" placeholder="اسم المنتج">
-            <input type="number" id="p-price" placeholder="السعر (SAR)">
+        <h2 style="color:var(--p)">إدارة المتجر 🛠️</h2>
+        <div style="text-align: right; margin-bottom: 20px;">
+            <label>اسم المنتج:</label>
+            <input type="text" id="p-name" placeholder="مثلاً: نايترو قيمينق">
+            <label>السعر (SAR):</label>
+            <input type="number" id="p-price" placeholder="50">
+            <label>رابط صورة المنتج:</label>
+            <input type="text" id="p-img" placeholder="ضع رابط الصورة هنا">
+            <label>القسم:</label>
             <select id="p-category">
                 <option value="discord">ديسكورد</option>
                 <option value="fivem">فايف إم</option>
-                <option value="design">رسم</option>
+                <option value="design">تصميم</option>
             </select>
-            <button class="buy" onclick="addNewProduct()">إضافة للمتجر</button>
+            <button class="buy" onclick="addNewProduct()">إضافة المنتج فوراً</button>
         </div>
         <hr>
-        <h3>إدارة المنتجات</h3>
+        <h3>المنتجات الحالية</h3>
         <div id="admin-products-list"></div>
     </div>
 </div>
 
+<div id="payment-modal">
+    <div class="modal-content">
+        <h3>إتمام الطلب</h3>
+        <p id="target-product"></p>
+        <div class="apple-pay-btn" onclick="processPay()">
+            <span>Pay with</span>
+            <svg width="40" height="16" viewBox="0 0 40 16"><path fill="currentColor" d="M36.7,11.4c-0.2,0.4-0.5,0.7-0.9,0.9c-0.4,0.2-1,0.3-1.7,0.3h-2.2v-5h2.2c0.7,0,1.2,0.1,1.6,0.3c0.4,0.2,0.7,0.5,0.9,0.9 c0.2,0.4,0.3,0.9,0.3,1.4C37,10.6,36.9,11,36.7,11.4z M34.1,8.3h-0.9v3.4h0.9c0.4,0,0.7-0.1,0.9-0.2c0.2-0.2,0.4-0.4,0.4-0.8 c0-0.4-0.1-0.7-0.3-0.9C34.9,8.4,34.6,8.3,34.1,8.3z M30.6,12.5h-1.3l-0.5-1.4h-2.3l-0.5,1.4h-1.3l2.2-6h1.5L30.6,12.5z M28.4,10.2 l-0.8-2.3l-0.8,2.3H28.4z M22.7,12.5h-3.9v-6h1.3v5h2.6V12.5z M17.2,10.1l-2.1-3.6h1.5l1.3,2.4l1.3-2.4h1.5l-2.1,3.6v2.4h-1.3V10.1z M6.9,8.5c0-1.1-0.9-2-2-2s-2,0.9-2,2c0,0.7,0.4,1.4,1,1.7c-0.1,0.1-0.2,0.2-0.3,0.3c-0.7,0.7-1.1,1.6-1.1,2.6 c0,2.1,1.7,3.8,3.8,3.8s3.8-1.7,3.8-3.8c0-1-0.4-1.9-1.1-2.6c-0.1-0.1-0.2-0.2-0.3-0.3C6.5,9.9,6.9,9.2,6.9,8.5z M4.9,15.7 c-1.4,0-2.5-1.1-2.5-2.5c0-0.6,0.2-1.2,0.6-1.6c0.5-0.5,1.2-0.8,1.9-0.8s1.4,0.3,1.9,0.8c0.4,0.4,0.6,1,0.6,1.6 C7.4,14.6,6.3,15.7,4.9,15.7z M4.9,10c-0.8,0-1.5-0.7-1.5-1.5S4.1,7,4.9,7s1.5,0.7,1.5,1.5S5.7,10,4.9,10z"/></svg>
+        </div>
+        <button onclick="document.getElementById('payment-modal').style.display='none'" style="margin-top:15px; background:none; border:none; color:#777; cursor:pointer;">إلغاء</button>
+    </div>
+</div>
+
 <script>
-    const OWNER_EMAIL = "nnaiif376@gmail.com";
+    const OWNER_EMAIL = "aawaf50@gmail.com";
     const OWNER_PASS = "Open208!10017@27@9";
 
-    let products = [
-        { id: 1, name: "نايترو قيمينق", price: 50, category: "discord" },
-        { id: 2, name: "ماب مافيا كلاسيك", price: 150, category: "fivem" },
-        { id: 3, name: "لوقو احترافي", price: 40, category: "design" }
+    let products = JSON.parse(localStorage.getItem('vault_products')) || [
+        { id: 1, name: "Discord Nitro", price: 50, category: "discord", img: "https://via.placeholder.com/300x180?text=Discord+Nitro" },
+        { id: 2, name: "Mafia Map", price: 150, category: "fivem", img: "https://via.placeholder.com/300x180?text=FiveM+Map" }
     ];
 
     function renderProducts(filter = 'all') {
         const display = document.getElementById('products-display');
         const adminList = document.getElementById('admin-products-list');
-        display.innerHTML = '';
-        adminList.innerHTML = '';
+        display.innerHTML = ''; adminList.innerHTML = '';
 
         products.forEach(p => {
             if (filter === 'all' || p.category === filter) {
                 display.innerHTML += `
                     <div class="item">
-                        <h3>${p.name}</h3>
-                        <p class="purple">${p.price} SAR</p>
-                        <button class="buy" onclick="alert('تواصل مع نايف لإتمام الطلب!')">شراء</button>
+                        <img src="${p.img || 'https://via.placeholder.com/300x180'}" alt="${p.name}">
+                        <div style="font-weight:bold; font-size:1.1rem;">${p.name}</div>
+                        <div class="price">${p.price} SAR</div>
+                        <button class="buy" onclick="openPayment('${p.name}')">شراء</button>
                     </div>`;
             }
             adminList.innerHTML += `
-                <div style="display:flex; justify-content:space-between; background:#1c0e30; padding:15px; margin-bottom:10px; border-radius:10px; border:1px solid var(--p);">
-                    <span>${p.name} (${p.price} SAR)</span>
-                    <button class="delete-btn" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8f9fa; padding:10px; margin-bottom:10px; border-radius:12px; border:1px solid #eee;">
+                    <span>${p.name}</span>
+                    <button style="color:red; border:none; background:none; cursor:pointer;" onclick="deleteProduct(${p.id})">حذف 🗑️</button>
                 </div>`;
         });
+        localStorage.setItem('vault_products', JSON.stringify(products));
+    }
+
+    function openPayment(name) {
+        document.getElementById('target-product').innerText = "أنت تطلب الآن: " + name;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+
+    function processPay() {
+        alert("جاري الاتصال بـ Apple Pay... (سيتم توجيهك للمالك لإكمال الدفع)");
+        window.location.href = "mailto:aawaf50@gmail.com?subject=طلب منتج";
     }
 
     function addNewProduct() {
         const name = document.getElementById('p-name').value;
         const price = document.getElementById('p-price').value;
+        const img = document.getElementById('p-img').value;
         const category = document.getElementById('p-category').value;
         if (name && price) {
-            products.push({ id: Date.now(), name, price, category });
+            products.push({ id: Date.now(), name, price, category, img });
             renderProducts();
             alert("تمت الإضافة بنجاح!");
             document.getElementById('p-name').value = '';
             document.getElementById('p-price').value = '';
+            document.getElementById('p-img').value = '';
         }
     }
 
@@ -126,12 +177,10 @@
     function checkOwner() {
         const email = prompt("أدخل بريد المالك:");
         if (email && email.toLowerCase().trim() === OWNER_EMAIL) {
-            const pass = prompt("أدخل كلمة المرور الخاصة بنايف:");
-            if (pass === OWNER_PASS) {
-                alert("أهلاً بك يا زعيم 👑");
-                showPage('admin-page');
-            } else { alert("كلمة السر خطأ!"); }
-        } else { alert("البريد خطأ!"); }
+            const pass = prompt("أدخل كلمة المرور:");
+            if (pass === OWNER_PASS) { showPage('admin-page'); } 
+            else { alert("خطأ!"); }
+        }
     }
 
     function showPage(id) {
@@ -139,7 +188,12 @@
         document.getElementById(id).classList.add('active');
     }
 
-    function filterShop(cat) { renderProducts(cat); }
+    function filterShop(cat, btn) {
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active-tab'));
+        btn.classList.add('active-tab');
+        renderProducts(cat);
+    }
+
     renderProducts();
 </script>
 
