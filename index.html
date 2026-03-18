@@ -3,137 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VAULT STORE | متجر فولت</title>
+    <title>VAULT STORE | النظام الملكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --main-mauve: #8a2be2;
-            --dark-black: #050505;
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --border-color: rgba(138, 43, 226, 0.2);
-        }
+        :root { --main: #8a2be2; --bg: #050505; --card: #111; --text: #fff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+        
+        /* نظام التنقل بين المتجر واللوحة */
+        .page { display: none; padding: 20px; animation: fadeIn 0.5s; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
-        }
+        /* الهيدر الملكي */
+        header { background: #000; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--main); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--main); }
+        .nav-btn { background: var(--main); border: none; padding: 8px 15px; border-radius: 8px; color: #fff; cursor: pointer; font-weight: bold; }
 
-        body {
-            background-color: var(--dark-black);
-            color: white;
-            background-image: radial-gradient(circle at top right, #1a0b2e 0%, #050505 50%);
-            min-height: 100vh;
-        }
+        /* واجهة المتجر */
+        .hero { text-align: center; padding: 60px 20px; background: linear-gradient(to bottom, #1a0b2e, #050505); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: -40px auto 40px; padding: 0 20px; }
+        .card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid #222; text-align: center; transition: 0.3s; }
+        .card:hover { border-color: var(--main); transform: translateY(-10px); box-shadow: 0 0 20px rgba(138,43,226,0.2); }
+        .price { font-size: 30px; color: var(--main); font-weight: 900; margin: 15px 0; }
+        .buy-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--main); color: #fff; font-weight: bold; cursor: pointer; }
 
-        /* الهيدر */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 8%; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(15px); border-bottom: 1px solid var(--border-color);
-            position: sticky; top: 0; z-index: 100;
-        }
-
-        .logo { font-size: 30px; font-weight: 900; color: var(--main-mauve); text-shadow: 0 0 10px var(--main-mauve); }
-
-        /* الحاوية */
-        .main-container { max-width: 1200px; margin: 40px auto; padding: 20px; }
-
-        /* كروت المنتجات */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-
-        .card {
-            background: var(--card-glass); border: 1px solid var(--border-color);
-            border-radius: 25px; padding: 25px; text-align: center;
-            transition: 0.4s; position: relative;
-        }
-
-        .card:hover { transform: translateY(-10px); border-color: var(--main-mauve); box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2); }
-
-        .card h3 { font-size: 22px; margin-bottom: 10px; }
-        .price { font-size: 28px; color: var(--main-mauve); font-weight: 900; margin: 15px 0; }
-
-        .btn {
-            width: 100%; padding: 12px; border: none; border-radius: 12px;
-            background: linear-gradient(45deg, var(--main-mauve), #6a1b9a);
-            color: white; font-weight: bold; cursor: pointer; font-size: 18px;
-            transition: 0.3s;
-        }
-
-        .btn:active { transform: scale(0.95); }
-
-        /* قسم الدفع */
-        .checkout-box {
-            margin-top: 50px; background: rgba(138, 43, 226, 0.05);
-            border-radius: 20px; padding: 30px; border: 1px dashed var(--main-mauve);
-            text-align: center;
-        }
-
-        .payment-methods img { height: 30px; margin: 0 10px; opacity: 0.7; filter: grayscale(1); }
-
-        /* لوحة التحكم المخفية (للمالك فقط) */
-        .admin-info {
-            margin-top: 20px; font-size: 12px; color: #333; text-align: left;
-        }
+        /* لوحة التحكم (Admin) */
+        .admin-login { max-width: 400px; margin: 100px auto; background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--main); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; }
+        .admin-dashboard { max-width: 1000px; margin: 40px auto; background: var(--card); padding: 30px; border-radius: 20px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-box { background: #000; padding: 20px; border-radius: 15px; border-right: 4px solid var(--main); text-align: center; }
+        
+        /* طرق الدفع */
+        .payments { text-align: center; padding: 40px; background: #080808; margin-top: 40px; border-top: 1px solid #222; }
+        .pay-icons img { height: 30px; margin: 10px; opacity: 0.5; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">VAULT STORE</div>
-    <div id="cart-count" style="background: var(--main-mauve); padding: 5px 15px; border-radius: 20px; font-weight: bold;">السلة: 0</div>
+    <div>
+        <button class="nav-btn" onclick="showPage('store')">المتجر</button>
+        <button class="nav-btn" onclick="showPage('login')" style="background: #222; margin-right: 10px;">لوحة المالك ⚙️</button>
+    </div>
 </header>
 
-<div class="main-container">
+<div id="store" class="page active">
+    <div class="hero">
+        <h1>متجر فولت الملكي</h1>
+        <p>المركز الأول لخدمات الديسكورد والنيترو</p>
+    </div>
     <div class="grid">
         <div class="card">
-            <div style="font-size: 50px; margin-bottom: 15px;">💎</div>
-            <h3>ديسكورد نيترو قيمينق (شهر)</h3>
-            <div class="price">15.00 ر.س</div>
-            <button class="btn" onclick="addToCart('نيترو شهر', 15)">إضافة للسلة 🛒</button>
+            <h3>نيترو قيمينق (شهر)</h3>
+            <div class="price">15 ر.س</div>
+            <button class="buy-btn">شراء الآن 💳</button>
         </div>
-
         <div class="card">
-            <div style="font-size: 50px; margin-bottom: 15px;">👑</div>
-            <h3>ديسكورد نيترو قيمينق (3 أشهر)</h3>
-            <div class="price">45.00 ر.س</div>
-            <button class="btn" onclick="addToCart('نيترو 3 أشهر', 45)">إضافة للسلة 🛒</button>
+            <h3>نيترو قيمينق (3 أشهر)</h3>
+            <div class="price">45 ر.س</div>
+            <button class="buy-btn">شراء الآن 💳</button>
         </div>
     </div>
-
-    <div class="checkout-box">
-        <h3>طرق الدفع المتاحة</h3>
-        <p style="color: #bbb; margin-bottom: 15px;">مدعوم بواسطة نظام فولت الآمن</p>
-        <div class="payment-methods">
+    <div class="payments">
+        <p>طرق الدفع المدعومة</p>
+        <div class="pay-icons">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Apple_Pay_logo.svg" alt="Apple Pay">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
         </div>
-        <button class="btn" style="margin-top: 20px; max-width: 300px;" onclick="checkout()">إتمام الطلب الآن</button>
     </div>
+</div>
 
-    <div class="admin-info">
-        Connected to: nnaiif376@gmail.com | aawaf50@gmail.com <br>
-        Auth: Encrypted System (Open208!...)
+<div id="login" class="page">
+    <div class="admin-login">
+        <h2 style="text-align: center; margin-bottom: 20px;">تسجيل دخول الإدارة</h2>
+        <input type="email" id="adminEmail" placeholder="البريد الإلكتروني">
+        <input type="password" id="adminPass" placeholder="كلمة المرور">
+        <button class="buy-btn" onclick="login()">دخول اللوحة</button>
+        <p id="loginError" style="color: red; text-align: center; margin-top: 10px; display: none;">البيانات غير صحيحة!</p>
+    </div>
+</div>
+
+<div id="dashboard" class="page">
+    <div class="admin-dashboard">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2>لوحة تحكم فولت | أهلاً نايف</h2>
+            <button class="nav-btn" onclick="showPage('store')" style="background: red;">تسجيل خروج</button>
+        </div>
+        
+        <div class="stat-grid">
+            <div class="stat-box"><h3>إجمالي المبيعات</h3><p style="color:var(--main); font-size: 24px;">1,250 ر.س</p></div>
+            <div class="stat-box"><h3>الطلبات الجديدة</h3><p style="color:var(--main); font-size: 24px;">12</p></div>
+            <div class="stat-box"><h3>عدد العملاء</h3><p style="color:var(--main); font-size: 24px;">85</p></div>
+        </div>
+
+        <div style="background: #000; padding: 20px; border-radius: 15px;">
+            <h3>آخر العمليات</h3>
+            <table style="width: 100%; margin-top: 15px; border-collapse: collapse; text-align: right;">
+                <tr style="border-bottom: 1px solid #222;">
+                    <th style="padding: 10px;">العميل</th>
+                    <th>المنتج</th>
+                    <th>السعر</th>
+                    <th>الحالة</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">nnaiif376@...</td>
+                    <td>نيترو 3 أشهر</td>
+                    <td>45 ر.س</td>
+                    <td style="color: lime;">مكتمل</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 
 <script>
-    let cartTotal = 0;
-    let itemsCount = 0;
+    // البريد والباسورد اللي عطيتني إياهم
+    const validEmails = ["nnaiif376@gmail.com", "aawaf50@gmail.com"];
+    const validPass = "Open208!10017@27@9";
 
-    function addToCart(name, price) {
-        itemsCount++;
-        cartTotal += price;
-        document.getElementById('cart-count').innerText = "السلة: " + itemsCount + " (" + cartTotal + " ر.س)";
-        alert("تم إضافة " + name + " بنجاح!");
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
     }
 
-    function checkout() {
-        if (cartTotal === 0) {
-            alert("سلتك فاضية يا وحش!");
+    function login() {
+        const email = document.getElementById('adminEmail').value;
+        const pass = document.getElementById('adminPass').value;
+        const error = document.getElementById('loginError');
+
+        if (validEmails.includes(email) && pass === validPass) {
+            showPage('dashboard');
+            error.style.display = 'none';
         } else {
-            alert("سيتم توجيهك لبوابة الدفع الآمنة الخاصة بمتجر فولت...");
-            // هنا يتم الربط مع API الدفع الخاص بك
+            error.style.display = 'block';
         }
     }
 </script>
